@@ -4,63 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Mellstroy Kombat ($MELL)</title>
+    <!-- Подключаем официальный скрипт TON Connect для авторизации кошельков -->
+    <script src="https://unpkg.com"></script>
     <style>
         * { box-sizing: border-box; }
-        body {
-            background: #0b0e14;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 15px;
-            user-select: none;
-            overflow-x: hidden;
-        }
-        .profile-section {
-            background: #141a24;
-            border-radius: 16px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #1f2937;
-        }
+        body { background: #0b0e14; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; text-align: center; margin: 0; padding: 15px; user-select: none; overflow-x: hidden; }
+        
+        /* Кнопка кошелька сверху */
+        .header-actions { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+        #ton-connect-btn { max-width: 200px; }
+
+        .profile-section { background: #141a24; border-radius: 16px; padding: 15px; margin-bottom: 20px; border: 1px solid #1f2937; }
         .level-title { font-size: 18px; font-weight: bold; color: #ff007f; margin-bottom: 5px; }
-        .progress-container {
-            background: #263244;
-            border-radius: 10px;
-            height: 8px;
-            width: 100%;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
+        .progress-container { background: #263244; border-radius: 10px; height: 8px; width: 100%; overflow: hidden; margin-bottom: 10px; }
         .progress-bar { background: linear-gradient(90deg, #ff007f, #7f00ff); height: 100%; width: 0%; transition: width 0.3s; }
         .balance-title { font-size: 14px; color: #8892b0; margin-top: 15px; text-transform: uppercase; }
         .balance { font-size: 44px; font-weight: 800; color: #00ffcc; text-shadow: 0 0 20px rgba(0,255,204,0.3); margin: 5px 0; }
         .income { font-size: 14px; color: #00ffcc; background: rgba(0,255,204,0.1); padding: 5px 12px; border-radius: 20px; display: inline-block; }
+        
+        /* Кнопка кликера с текстом внутри, если нет картинки */
         .click-container { position: relative; margin: 30px auto; width: 230px; height: 230px; }
-        .click-btn {
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            border: 6px solid #1f2937;
-            background: #1c2331 url('level1.jpg') center/cover no-repeat;
-            box-shadow: 0 0 40px rgba(255, 0, 127, 0.4);
-            cursor: pointer;
-            transition: transform 0.05s ease, border-color 0.3s;
-        }
+        .click-btn { width: 100%; height: 100%; border-radius: 50%; border: 6px solid #1f2937; background: #1c2331 center/cover no-repeat; box-shadow: 0 0 40px rgba(255, 0, 127, 0.4); cursor: pointer; transition: transform 0.05s ease; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: #ff007f; }
         .click-btn:active { transform: scale(0.95); }
+        
         .energy-text { font-size: 16px; color: #ffcc00; font-weight: bold; margin-bottom: 25px; }
         .shop-title { text-align: left; font-size: 16px; color: #8892b0; margin-left: 5px; margin-bottom: 10px; }
         .shop { display: flex; flex-direction: column; gap: 12px; }
-        .card {
-            background: #141a24;
-            border: 1px solid #1f2937;
-            border-radius: 14px;
-            padding: 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-        .card:hover { background: #1c2533; }
+        .card { background: #141a24; border: 1px solid #1f2937; border-radius: 14px; padding: 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .card-info { display: flex; flex-direction: column; text-align: left; }
         .card-name { font-weight: bold; font-size: 15px; margin-bottom: 4px; }
         .card-profit { font-size: 12px; color: #00ffcc; }
@@ -68,72 +38,90 @@
     </style>
 </head>
 <body>
+
+    <!-- Кнопка подключения криптокошелька -->
+    <div class="header-actions">
+        <div id="ton-connect-btn"></div>
+    </div>
+
     <div class="profile-section">
-        <div class="level-title" id="lvlTitle">Загрузка...</div>
+        <div class="level-title" id="lvlTitle">Обычный Меллстрой (Уровень 1)</div>
         <div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>
         <div class="balance-title">Баланс токенов $MELL</div>
         <div class="balance" id="balanceText">0</div>
         <div class="income" id="incomeText">+0 $MELL/сек</div>
     </div>
-    <div class="click-container"><div class="click-btn" id="clickBtn"></div></div>
+    
+    <div class="click-container">
+        <div class="click-btn" id="clickBtn">TAP!</div>
+    </div>
+    
     <div class="energy-text" id="energyText">⚡ 1000 / 1000</div>
+
     <div class="shop-title">Улучшить Медийку:</div>
     <div class="shop">
-        <div class="card" onclick="buyUpgrade('papič')">
+        <div class="card" onclick="buyUpgrade('papič', 100, 2)">
             <div class="card-info"><span class="card-name">🎬 Стримы с Папичем</span><span class="card-profit">+2 $MELL/с</span></div>
             <span class="card-cost">100 $MELL</span>
         </div>
-        <div class="card" onclick="buyUpgrade('kick')">
+        <div class="card" onclick="buyUpgrade('kick', 1500, 35)">
             <div class="card-info"><span class="card-name">🎰 Контракт с KICK</span><span class="card-profit">+35 $MELL/с</span></div>
             <span class="card-cost">1500 $MELL</span>
         </div>
-        <div class="card" onclick="buyUpgrade('richard')">
+        <div class="card" onclick="buyUpgrade('richard', 8000, 200)">
             <div class="card-info"><span class="card-name">💎 Часы Richard Mille</span><span class="card-profit">+200 $MELL/с</span></div>
             <span class="card-cost">8000 $MELL</span>
         </div>
     </div>
+
     <script>
-        const USER_ID = "12345"; const API_URL = "http://127.0.0.1:8000";
-        let localBalance = 0; let localEnergy = 1000; let localIncome = 0; let unpushedClicks = 0;
-        async function syncWithServer(clicksToSend = 0) {
-            try {
-                let url = clicksToSend > 0 ? `${API_URL}/sync` : `${API_URL}/get_user/${USER_ID}`;
-                let options = clicksToSend > 0 ? {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_id: USER_ID, clicks: clicksToSend })
-                } : { method: 'GET' };
-                let response = await fetch(url, options); let data = await response.json();
-                localBalance = data.balance; localEnergy = data.energy; localIncome = data.passive_income;
-                document.getElementById('balanceText').innerText = Math.floor(localBalance).toLocaleString();
-                document.getElementById('energyText').innerText = `⚡ ${localEnergy} / 1000`;
-                document.getElementById('incomeText').innerText = `+${localIncome} $MELL/сек`;
-                document.getElementById('lvlTitle').innerText = `${data.title} (Уровень ${data.level})`;
-                document.getElementById('clickBtn').style.backgroundImage = `url('${data.img}')`;
-                let nextLevelMax = data.level === 1 ? 25000 : data.level === 2 ? 100000 : 500000;
-                let progressPercent = Math.min(100, (data.total_earned / nextLevelMax) * 100);
-                document.getElementById('progressBar').style.width = `${progressPercent}%`;
-            } catch (err) { console.log("Ошибка сети"); }
+        // Сохранение прогресса в памяти устройства
+        let state = JSON.parse(localStorage.getItem('mell_state')) || { balance: 0, total_earned: 0, energy: 1000, income: 0 };
+        
+        function save() { localStorage.setItem('mell_state', JSON.stringify(state)); }
+        
+        function getLevel(total) {
+            if (total < 25000) return { lvl: 1, title: "Обычный Меллстрой", img: "level1.jpg", max: 25000 };
+            if (total < 100000) return { lvl: 2, title: "Меллстрой в Мытищах", img: "level2.jpg", max: 100000 };
+            return { lvl: 3, title: "Легенда Кика", img: "level3.jpg", max: 500000 };
         }
+
+        function updateUI() {
+            let lvlInfo = getLevel(state.total_earned);
+            document.getElementById('balanceText').innerText = Math.floor(state.balance).toLocaleString();
+            document.getElementById('energyText').innerText = `⚡ ${state.energy} / 1000`;
+            document.getElementById('incomeText').innerText = `+${state.income} $MELL/сек`;
+            document.getElementById('lvlTitle').innerText = `${lvlInfo.title} (Уровень ${lvlInfo.lvl})`;
+            
+            // Если картинки загружены в репозиторий, они отобразятся, иначе останется стильный фон
+            document.getElementById('clickBtn').style.backgroundImage = `url('${lvlInfo.img}')`;
+            document.getElementById('progressBar').style.width = `${Math.min(100, (state.total_earned / lvlInfo.max) * 100)}%`;
+        }
+
         document.getElementById('clickBtn').addEventListener('click', () => {
-            if (localEnergy <= 0) return;
-            localBalance += 1; localEnergy -= 1; unpushedClicks += 1;
-            document.getElementById('balanceText').innerText = Math.floor(localBalance).toLocaleString();
-            document.getElementById('energyText').innerText = `⚡ ${localEnergy} / 1000`;
+            if (state.energy <= 0) return;
+            state.balance += 1; state.total_earned += 1; state.energy -= 1;
+            updateUI(); save();
         });
-        setInterval(() => { if (unpushedClicks > 0 || localIncome > 0) { syncWithServer(unpushedClicks); unpushedClicks = 0; } }, 2000);
+
         setInterval(() => {
-            if (localIncome > 0) { localBalance += localIncome; document.getElementById('balanceText').innerText = Math.floor(localBalance).toLocaleString(); }
-            if (localEnergy < 1000) { localEnergy = Math.min(1000, localEnergy + 3); document.getElementById('energyText').innerText = `⚡ ${localEnergy} / 1000`; }
+            if (state.income > 0) { state.balance += state.income; state.total_earned += state.income; }
+            if (state.energy < 1000) state.energy = Math.min(1000, state.energy + 3);
+            updateUI(); save();
         }, 1000);
-        async function buyUpgrade(type) {
-            try {
-                let response = await fetch(`${API_URL}/buy_upgrade/${USER_ID}/${type}`, { method: 'POST' });
-                if (!response.ok) { alert("Не хватает токенов $MELL!"); return; }
-                syncWithServer(0);
-            } catch (err) { alert("Ошибка"); }
+
+        function buyUpgrade(type, cost, inc) {
+            if (state.balance >= cost) { state.balance -= cost; state.income += inc; updateUI(); save(); } 
+            else { alert("Не хватает токенов!"); }
         }
-        syncWithServer(0);
+
+        // Инициализация TON Connect кошелька
+        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+            manifestUrl: 'https://github.io', // Инициализация крипто-манифеста
+            buttonRootId: 'ton-connect-btn'
+        });
+
+        updateUI();
     </script>
 </body>
 </html>
