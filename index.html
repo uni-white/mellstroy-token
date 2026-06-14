@@ -4,16 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Mellstroy Kombat ($MELL)</title>
-    <!-- Подключаем официальный скрипт TON Connect для авторизации кошельков -->
     <script src="https://unpkg.com"></script>
     <style>
         * { box-sizing: border-box; }
         body { background: #0b0e14; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; text-align: center; margin: 0; padding: 15px; user-select: none; overflow-x: hidden; }
-        
-        /* Кнопка кошелька сверху */
-        .header-actions { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+        .header-actions { display: flex; justify-content: flex-end; margin-bottom: 10px; min-height: 40px; }
         #ton-connect-btn { max-width: 200px; }
-
         .profile-section { background: #141a24; border-radius: 16px; padding: 15px; margin-bottom: 20px; border: 1px solid #1f2937; }
         .level-title { font-size: 18px; font-weight: bold; color: #ff007f; margin-bottom: 5px; }
         .progress-container { background: #263244; border-radius: 10px; height: 8px; width: 100%; overflow: hidden; margin-bottom: 10px; }
@@ -21,12 +17,9 @@
         .balance-title { font-size: 14px; color: #8892b0; margin-top: 15px; text-transform: uppercase; }
         .balance { font-size: 44px; font-weight: 800; color: #00ffcc; text-shadow: 0 0 20px rgba(0,255,204,0.3); margin: 5px 0; }
         .income { font-size: 14px; color: #00ffcc; background: rgba(0,255,204,0.1); padding: 5px 12px; border-radius: 20px; display: inline-block; }
-        
-        /* Кнопка кликера с текстом внутри, если нет картинки */
         .click-container { position: relative; margin: 30px auto; width: 230px; height: 230px; }
         .click-btn { width: 100%; height: 100%; border-radius: 50%; border: 6px solid #1f2937; background: #1c2331 center/cover no-repeat; box-shadow: 0 0 40px rgba(255, 0, 127, 0.4); cursor: pointer; transition: transform 0.05s ease; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: #ff007f; }
         .click-btn:active { transform: scale(0.95); }
-        
         .energy-text { font-size: 16px; color: #ffcc00; font-weight: bold; margin-bottom: 25px; }
         .shop-title { text-align: left; font-size: 16px; color: #8892b0; margin-left: 5px; margin-bottom: 10px; }
         .shop { display: flex; flex-direction: column; gap: 12px; }
@@ -39,7 +32,6 @@
 </head>
 <body>
 
-    <!-- Кнопка подключения криптокошелька -->
     <div class="header-actions">
         <div id="ton-connect-btn"></div>
     </div>
@@ -53,7 +45,7 @@
     </div>
     
     <div class="click-container">
-        <div class="click-btn" id="clickBtn">TAP!</div>
+        <div class="click-btn" id="clickBtn"></div>
     </div>
     
     <div class="energy-text" id="energyText">⚡ 1000 / 1000</div>
@@ -75,15 +67,14 @@
     </div>
 
     <script>
-        // Сохранение прогресса в памяти устройства
         let state = JSON.parse(localStorage.getItem('mell_state')) || { balance: 0, total_earned: 0, energy: 1000, income: 0 };
         
         function save() { localStorage.setItem('mell_state', JSON.stringify(state)); }
         
         function getLevel(total) {
-            if (total < 25000) return { lvl: 1, title: "Обычный Меллстрой", img: "level1.jpg", max: 25000 };
-            if (total < 100000) return { lvl: 2, title: "Меллстрой в Мытищах", img: "level2.jpg", max: 100000 };
-            return { lvl: 3, title: "Легенда Кика", img: "level3.jpg", max: 500000 };
+            if (total < 25000) return { lvl: 1, title: "Обычный Меллстрой", img: "level1.JPG", max: 25000 };
+            if (total < 100000) return { lvl: 2, title: "Меллстрой в Мытищах", img: "level2.JPG", max: 100000 };
+            return { lvl: 3, title: "Легенда Кика", img: "level3.JPG", max: 500000 };
         }
 
         function updateUI() {
@@ -92,8 +83,6 @@
             document.getElementById('energyText').innerText = `⚡ ${state.energy} / 1000`;
             document.getElementById('incomeText').innerText = `+${state.income} $MELL/сек`;
             document.getElementById('lvlTitle').innerText = `${lvlInfo.title} (Уровень ${lvlInfo.lvl})`;
-            
-            // Если картинки загружены в репозиторий, они отобразятся, иначе останется стильный фон
             document.getElementById('clickBtn').style.backgroundImage = `url('${lvlInfo.img}')`;
             document.getElementById('progressBar').style.width = `${Math.min(100, (state.total_earned / lvlInfo.max) * 100)}%`;
         }
@@ -115,13 +104,15 @@
             else { alert("Не хватает токенов!"); }
         }
 
-        // Инициализация TON Connect кошелька
-        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://github.io', // Инициализация крипто-манифеста
-            buttonRootId: 'ton-connect-btn'
-        });
+        try {
+            const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+                manifestUrl: 'https://github.io',
+                buttonRootId: 'ton-connect-btn'
+            });
+        } catch(e) { console.log(e); }
 
         updateUI();
     </script>
 </body>
 </html>
+
