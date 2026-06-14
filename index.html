@@ -7,7 +7,7 @@
     <script src="https://unpkg.com"></script>
     <style>
         * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { background: #07090e; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 15px; user-select: none; overflow-x: hidden; }
+        body { background: #07090e; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 15px; user-select: none; overflow-x: hidden; }
         .header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .logo-text { font-size: 20px; font-weight: 900; color: #ff007f; letter-spacing: 1px; text-shadow: 0 0 15px rgba(255,0,127,0.4); }
         .user-profile-header { display: flex; align-items: center; gap: 12px; background: rgba(20, 26, 36, 0.6); backdrop-filter: blur(10px); padding: 12px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 15px; text-align: left; }
@@ -15,11 +15,9 @@
         .user-info-text { display: flex; flex-direction: column; }
         .user-name { font-weight: bold; font-size: 15px; color: #fff; }
         .user-id { font-size: 11px; color: #8892b0; margin-top: 1px; }
-        .web3-status { font-size: 11px; color: #00ffcc; font-weight: bold; margin-top: 1px; display: none; }
         .navbar-top { display: flex; justify-content: space-between; align-items: center; background: rgba(16, 21, 32, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 6px; margin-bottom: 20px; width: 100%; }
         .nav-item { background: none; border: none; color: #8892b0; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-size: 11px; font-weight: 700; width: 25%; text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.2s, background 0.2s; padding: 8px 4px; border-radius: 10px; }
         .nav-item.active { color: #ff007f; background: rgba(255, 0, 127, 0.08); text-shadow: 0 0 10px rgba(255,0,127,0.2); }
-        .nav-icon { font-size: 18px; }
         .page { display: none; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
@@ -47,9 +45,6 @@
         .slot-reel.spinning { animation: shake 0.1s infinite; }
         @keyframes shake { 0% { transform: translateY(-2px); } 50% { transform: translateY(2px); } 100% { transform: translateY(-2px); } }
         .claim-btn { background: #ff007f; border: none; color: white; padding: 14px; border-radius: 12px; margin-top: 10px; width: 100%; font-weight: bold; cursor: pointer; }
-        .bonus-card { background: linear-gradient(135deg, #1d183a, #111625); border: 2px dashed #ff007f; border-radius: 16px; padding: 15px; text-align: left; margin-bottom: 15px; }
-        .combo-inputs { display: flex; gap: 10px; margin-top: 10px; }
-        .combo-input { background: #0c0f17; border: 1px solid #374151; color: #ff007f; font-weight: bold; padding: 10px; border-radius: 8px; width: 100%; text-align: center; }
     </style>
 </head>
 <body>
@@ -63,15 +58,14 @@
         <div class="user-info-text">
             <span class="user-name" id="profileName">Mellstroyer</span>
             <span class="user-id" id="profileId">ID: 123456789</span>
-            <span class="web3-status" id="web3Status">✓ Web3 ВЕРИФИЦИРОВАН</span>
         </div>
     </div>
 
     <div class="navbar-top">
-        <button class="nav-item active" onclick="switchTab('exchange', this)"><span class="nav-icon">🎮</span>Биржа</button>
-        <button class="nav-item" onclick="switchTab('mine', this)"><span class="nav-icon">⛏️</span>Майнинг</button>
-        <button class="nav-item" onclick="switchTab('earn', this)"><span class="nav-icon">🎰</span>Казино</button>
-        <button class="nav-item" onclick="switchTab('friends', this)"><span class="nav-icon">👥</span>Кенты</button>
+        <button class="nav-item active" onclick="switchTab('exchange', this)">Биржа</button>
+        <button class="nav-item" onclick="switchTab('mine', this)">Майнинг</button>
+        <button class="nav-item" onclick="switchTab('earn', this)">Казино</button>
+        <button class="nav-item" onclick="switchTab('friends', this)">Кенты</button>
     </div>
 
     <!-- ВКЛАДКА 1: БИРЖА -->
@@ -99,19 +93,8 @@
     <div id="page-earn" class="page">
         <h2 style="text-align: left; margin: 0 0 20px 5px; font-size: 22px; font-weight: 800;">Задания и Награды</h2>
         <div class="earn-section">
-            <div class="bonus-card">
-                <b style="color: #ffcc00; font-size: 16px;">🔥 Ежедневное комбо дня</b>
-                <p style="margin: 5px 0 0 0; font-size: 13px; color: #aaa;">Введи ID трех карточек дня латиницей (например: papich, kick, jet) и получи 5 000 000 $MELL!</p>
-                <div class="combo-inputs">
-                    <input type="text" id="c1" class="combo-input" placeholder="Карта 1">
-                    <input type="text" id="c2" class="combo-input" placeholder="Карта 2">
-                    <input type="text" id="c3" class="combo-input" placeholder="Карта 3">
-                </div>
-                <button class="claim-btn" style="margin-top: 12px; background: #ff007f;" onclick="checkCombo()">🎰 Проверить комбо</button>
-            </div>
-
             <div class="casino-box">
-                <b style="color: #ff007f; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;">🎰 Казино Меллстроя</b>
+                <b style="color: #ff007f; font-size: 18px; text-transform: uppercase;">🎰 Казино Меллстроя</b>
                 <p style="margin: 5px 0 15px 0; font-size: 13px; color: #8892b0;">Ставка: <span style="color:#ffcc00; font-weight:bold;">100,000 $MELL</span>. Крути барабаны!</p>
                 <div class="slots-display">
                     <div class="slot-reel" id="reel1">🎲</div>
@@ -120,44 +103,35 @@
                 </div>
                 <button class="claim-btn" style="background: linear-gradient(90deg, #7f00ff, #ff007f);" onclick="spinSlots()">КРУТИТЬ БОЯРУ</button>
             </div>
-
-            <div class="card" onclick="claimDailyReward()" style="border-color: #ffcc00; background: rgba(255, 204, 0, 0.05);">
-                <div style="text-align: left;">
-                    <b style="color: #fff; font-size: 16px;">📆 Ежедневный Бонус за вход</b><br>
-                    <span id="streakText" style="font-size: 13px; color: #ffcc00; font-weight: 500;">Твой текущий стрик: 0 дней</span>
-                </div>
-                <button style="background: #ffcc00; border: none; color: #000; padding: 10px 18px; border-radius: 10px; font-weight: bold; cursor: pointer;">ЗАБРАТЬ</button>
-            </div>
         </div>
     </div>
 
     <!-- ВКЛАДКА 4: КЕНТЫ -->
     <div id="page-friends" class="page">
-        <h2 style="text-align: left; margin: 0 0 20px 5px; font-size: 22px; font-weight: 800;">Твои Кенты</h2>
+        <h2>Твои Кенты</h2>
         <div class="profile-section" style="text-align: center;">
-            <div class="balance-title" style="margin: 0;">Всего приглашено кентов</div>
+            <div class="balance-title">Всего приглашено кентов</div>
             <div class="balance" id="refCountText" style="font-size: 64px; color: #ffcc00;">0</div>
-            <p style="color: #8892b0; font-size: 14px; line-height: 1.4;">За каждого приглашенного друга вы оба моментально получаете жирный бонус по <b>20,000 $MELL</b>!</p>
         </div>
-        <button class="claim-btn" style="background: linear-gradient(90deg, #ff007f, #7f00ff); padding: 16px; font-size: 16px;" onclick="copyRefLink()">🔗 СКОПИРОВАТЬ РЕФ-ССЫЛКУ</button>
+        <button class="claim-btn" style="background: linear-gradient(90deg, #ff007f, #7f00ff);" onclick="copyRefLink()">🔗 СКОПИРОВАТЬ РЕФ-ССЫЛКУ</button>
     </div>
     <script>
-        let userId = "123456789"; let username = "Mellstroyer"; let referrerId = null;
+        let userId = "123456789"; let username = "Mellstroyer";
         if (window.Telegram && window.Telegram.WebApp) {
             const tg = window.Telegram.WebApp; tg.expand();
             if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 userId = tg.initDataUnsafe.user.id.toString();
                 username = tg.initDataUnsafe.user.username || tg.initDataUnsafe.user.first_name;
             }
-            if (tg.initDataUnsafe.start_param) referrerId = tg.initDataUnsafe.start_param;
         }
 
         document.getElementById('profileName').innerText = username;
         document.getElementById('profileId').innerText = `ID: ${userId}`;
         document.getElementById('userLetter').innerText = username.charAt(0).toUpperCase();
 
-        const API_URL = "http://127.0.0.1:8000";
-        let localBalance = 0; let localEnergy = 1000; let localIncome = 0; let unpushedClicks = 0; let userUpgrades = {};
+        let state = JSON.parse(localStorage.getItem('mell_data_' + userId)) || {
+            balance: 5000, total_earned: 5000, energy: 1000, income: 0, upgrades: {}, refs: 0
+        };
 
         const seasonColors = [
             "radial-gradient(circle, #ff0055, #20003b)", "radial-gradient(circle, #ffcc00, #3a2500)", 
@@ -169,6 +143,36 @@
             "radial-gradient(circle, #8b0000, #2a0000)", "radial-gradient(circle, #ffffff, #2c3e50)"
         ];
 
+        const seasonsConfig = [
+            { lvl: 0, title: "0 Сезон: Безымянный", img: "level0.JPG", max: 25000 },
+            { lvl: 1, title: "1 Сезон: Темки", img: "level1.JPG", max: 150000 },
+            { lvl: 2, title: "2 Сезон: Общага", img: "level2.JPG", max: 1000000 },
+            { lvl: 3, title: "3 Сезон: Армия", img: "level3.JPG", max: 5000000 },
+            { lvl: 4, title: "4 Сезон: Поезд брата", img: "level4.JPG", max: 20000000 },
+            { lvl: 5, title: "5 Сезон: Мурино", img: "level5.JPG", max: 100000000 },
+            { lvl: 6, title: "6 Сезон: Банька", img: "level6.JPG", max: 500000000 },
+            { lvl: 7, title: "7 Сезон: Молочное", img: "level7.JPG", max: 2000000000 },
+            { lvl: 8, title: "8 Сезон: Село против Города", img: "level8.JPG", max: 10000000000 },
+            { lvl: 9, title: "9 Сезон: Мытищи", img: "level9.JPG", max: 50000000000 },
+            { lvl: 10, title: "10 Сезон: Перевороты", img: "level10.JPG", max: 200000000000 },
+            { lvl: 11, title: "11 Сезон: Элджеевка", img: "level11.JPG", max: 1000000000000}
+        ];
+
+        const upgradesConfig = {
+            "papich": { name: "🎬 Нарезки с Папичем", cost: 100, income: 2 },
+            "zubarev": { name: "🥟 Стрим с Зубаревым", cost: 800, income: 15 },
+            "kick": { name: "🎰 Контракт с KICK", cost: 5000, income: 110 },
+            "richard": { name: "💎 Часы Richard Mille", cost: 30000, income: 750 },
+            "jet": { name: "✈️ Личный Бизнес-Джет", cost: 250000, income: 4500 }
+        };
+
+        function save() { localStorage.setItem('mell_data_' + userId, JSON.stringify(state)); }
+
+        function getCurrentSeason() {
+            for (let s of seasonsConfig) { if (state.total_earned < s.max) return s; }
+            return seasonsConfig[seasonsConfig.length - 1];
+        }
+
         function switchTab(tabId, btn) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -176,52 +180,41 @@
             btn.classList.add('active');
         }
 
+        function updateUI() {
+            let currentSeason = getCurrentSeason();
+            document.getElementById('balanceText').innerText = Math.floor(state.balance).toLocaleString();
+            document.getElementById('energyText').innerText = `⚡ ${state.energy} / 1000`;
+            document.getElementById('incomeText').innerText = `+${state.income} $MELL/сек`;
+            document.getElementById('lvlTitle').innerText = currentSeason.title.toUpperCase();
+            document.getElementById('refCountText').innerText = state.refs;
+            
+            let colorIndex = Math.min(currentSeason.lvl, seasonColors.length - 1);
+            document.getElementById('clickBtn').style.background = seasonColors[colorIndex];
+            document.getElementById('clickBtn').style.backgroundImage = `url('${currentSeason.img}')`;
+            
+            let progressPercent = Math.min(100, (state.total_earned / currentSeason.max) * 100);
+            document.getElementById('progressBar').style.width = progressPercent + '%';
+            renderShop();
+        }
+
         document.getElementById('clickArea').addEventListener('click', (e) => {
-            if (localEnergy <= 0) return;
+            if (state.energy <= 0) return;
             const particle = document.createElement('div');
             particle.className = 'tap-particle'; particle.innerText = '+1';
             const rect = e.currentTarget.getBoundingClientRect();
-            const x = e.clientX - rect.left; const y = e.clientY - rect.top;
-            particle.style.left = x + 'px'; particle.style.top = y + 'px';
+            particle.style.left = (e.clientX - rect.left) + 'px';
+            particle.style.top = (e.clientY - rect.top) + 'px';
             e.currentTarget.appendChild(particle);
             setTimeout(() => particle.remove(), 600);
 
-            localBalance += 1; localEnergy -= 1; unpushedClicks += 1;
-            document.getElementById('balanceText').innerText = Math.floor(localBalance).toLocaleString();
-            document.getElementById('energyText').innerText = `⚡ ${localEnergy} / 1000`;
+            state.balance += 1; state.total_earned += 1; state.energy -= 1;
+            updateUI(); save();
         });
 
-        async function syncWithServer(clicksToSend = 0) {
-            try {
-                let response = await fetch(`${API_URL}/sync`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_id: userId, username: username, clicks: clicksToSend, referrer_id: referrerId })
-                });
-                let data = await response.json();
-                localBalance = data.balance; localEnergy = data.energy; localIncome = data.passive_income; userUpgrades = data.upgrades;
-                
-                document.getElementById('balanceText').innerText = Math.floor(localBalance).toLocaleString();
-                document.getElementById('energyText').innerText = `⚡ ${localEnergy} / 1000`;
-                document.getElementById('incomeText').innerText = `+${localIncome} $MELL/сек`;
-                document.getElementById('lvlTitle').innerText = data.title.toUpperCase();
-                document.getElementById('refCountText').innerText = data.referrals_count;
-                document.getElementById('streakText').innerText = `Твой стрик: ${data.streak} дней`;
-                
-                let colorIndex = Math.min(data.level, seasonColors.length - 1);
-                document.getElementById('clickBtn').style.background = seasonColors[colorIndex];
-                document.getElementById('clickBtn').style.backgroundImage = `url('${data.img}')`;
-
-                document.getElementById('progressBar').style.width = Math.min(100, (data.total_earned / data.next_max) * 100) + '%';
-                if (data.wallet) document.getElementById('web3Status').style.display = "block";
-                renderShop(data.upgrades_list);
-            } catch (err) { console.log("Синхронизация..."); }
-        }
-
-        function renderShop(config) {
+        function renderShop() {
             const container = document.getElementById('shopContainer'); container.innerHTML = "";
-            for (let id in config) {
-                let card = config[id]; let currentLvl = userUpgrades[id] || 0;
+            for (let id in upgradesConfig) {
+                let card = upgradesConfig[id]; let currentLvl = state.upgrades[id] || 0;
                 let currentCost = Math.floor(card.cost * Math.pow(1.5, currentLvl));
                 container.innerHTML += `
                     <div class="card" onclick="buyUpgrade('${id}')">
@@ -231,62 +224,53 @@
             }
         }
 
-        setInterval(() => { if (unpushedClicks > 0 || localIncome > 0) { syncWithServer(unpushedClicks); unpushedClicks = 0; } }, 2000);
-        setInterval(() => {
-            if (localIncome > 0) { localBalance += localIncome; document.getElementById('balanceText').innerText = Math.floor(localBalance).toLocaleString(); }
-            if (localEnergy < 1000) { localEnergy = Math.min(1000, localEnergy + 3); document.getElementById('energyText').innerText = `⚡ ${localEnergy} / 1000`; }
-        }, 1000);
-
-        async function buyUpgrade(id) {
-            try {
-                let response = await fetch(`${API_URL}/buy_upgrade`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: userId, upgrade_id: id }) });
-                if (!response.ok) { alert("Не хватает токенов!"); return; }
-                syncWithServer(0);
-            } catch (err) { alert("Ошибка"); }
+        function buyUpgrade(id) {
+            let card = upgradesConfig[id]; let currentLvl = state.upgrades[id] || 0;
+            let currentCost = Math.floor(card.cost * Math.pow(1.5, currentLvl));
+            if (state.balance >= currentCost) {
+                state.balance -= currentCost;
+                state.upgrades[id] = currentLvl + 1;
+                state.income += card.income;
+                updateUI(); save();
+            } else { alert("Не хватает токенов!"); }
         }
 
-        async function checkCombo() {
-            let c1 = document.getElementById('c1').value.trim().toLowerCase();
-            let c2 = document.getElementById('c2').value.trim().toLowerCase();
-            let c3 = document.getElementById('c3').value.trim().toLowerCase();
-            let response = await fetch(`${API_URL}/claim_combo`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: userId, combo: [c1, c2, c3] }) });
-            let data = await response.json(); alert(data.message); syncWithServer(0);
-        }
-
-        async function spinSlots() {
-            if (localBalance < 100000) { alert("Минимальная ставка — 100,000 $MELL!"); return; }
+        function spinSlots() {
+            if (state.balance < 100000) { alert("Минимальная ставка — 100,000 $MELL!"); return; }
+            state.balance -= 100000;
             const r1 = document.getElementById('reel1'); const r2 = document.getElementById('reel2'); const r3 = document.getElementById('reel3');
             r1.classList.add('spinning'); r2.classList.add('spinning'); r3.classList.add('spinning');
-            let characters = ["papich", "kick", "jet", "zubarev"];
-            let comboResult = [characters[Math.floor(Math.random()*4)], characters[Math.floor(Math.random()*4)], characters[Math.floor(Math.random()*4)]];
+            
+            let emojis = ["🎬", "🎰", "✈️", "🥟"];
+            let res1 = emojis[Math.floor(Math.random()*4)];
+            let res2 = emojis[Math.floor(Math.random()*4)];
+            let res3 = emojis[Math.floor(Math.random()*4)];
 
-            setTimeout(async () => {
+            setTimeout(() => {
                 r1.classList.remove('spinning'); r2.classList.remove('spinning'); r3.classList.remove('spinning');
-                const emojiMap = { "papich": "🎬", "kick": "🎰", "jet": "✈️", "zubarev": "🥟" };
-                r1.innerText = emojiMap[comboResult]; r2.innerText = emojiMap[comboResult]; r3.innerText = emojiMap[comboResult];
-
-                let response = await fetch(`${API_URL}/claim_combo`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user_id: userId, combo: comboResult }) });
-                let data = await response.json(); alert(data.message); syncWithServer(0);
+                r1.innerText = res1; r2.innerText = res2; r3.innerText = res3;
+                if (res1 === res2 && res2 === res3) {
+                    state.balance += 5000000; state.total_earned += 5000000;
+                    alert("🎰 ДЖЕКПОТ! Вы выиграли 5,000,000 $MELL!");
+                } else { alert("Увы, ничего не выпало!"); }
+                updateUI(); save();
             }, 1200);
         }
 
-        async function claimDailyReward() {
-            let response = await fetch(`${API_URL}/daily_claim/${userId}`, { method: 'POST' });
-            let data = await response.json();
-            if (data.status === "early") alert("Бонус доступен раз в 24 часа. Приходи завтра!");
-            else { alert(`Красава! Получи бонус: +${data.reward} $MELL`); syncWithServer(0); }
+        function copyRefLink() {
+            const refLink = `https://t.me{userId}`;
+            navigator.clipboard.writeText(refLink);
+            alert("Исправленная реф-ссылка скопирована в буфер обмена!");
         }
 
-        function copyRefLink() {
-            const botUsername = "mellstroy_fantoken_bot"; 
-            navigator.clipboard.writeText(`https://t.me{botUsername}/play?startApp=${userId}`);
-            alert("Реферальная ссылка скопирована в буфер обмена!");
-        }
+        setInterval(() => {
+            if (state.income > 0) { state.balance += state.income; state.total_earned += state.income; }
+            if (state.energy < 1000) state.energy = Math.min(1000, state.energy + 3);
+            updateUI(); save();
+        }, 1000);
 
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({ manifestUrl: 'https://github.io', buttonRootId: 'ton-connect-btn' });
-        tonConnectUI.onStatusChange(async (wallet) => { if (wallet) { document.getElementById('web3Status').style.display = "block"; await fetch(`${API_URL}/connect_wallet/${userId}/${wallet.account.address}`, { method: 'POST' }); } });
-
-        syncWithServer(0);
+        updateUI();
     </script>
 </body>
 </html>
